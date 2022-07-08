@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">BhakaMusic</string>
+    <string name="create_your_experience">Create your experience</string>
+    <string name="stream_your_favourite_song_non_the_go">Stream your favourite song\nON THE GO</string>
+    <string name="let_s_go">Let\'s Go</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="token">token</string>
+    <string name="terms_and_conditions_privacy_policy">Terms and Conditions | Privacy Policy</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_home">Music</string>
+    <string name="title_dashboard">Favourite</string>
+    <string name="title_notifications">Account</string>
+</resources>
