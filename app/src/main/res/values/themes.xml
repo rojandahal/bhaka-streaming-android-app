@@ -11,5 +11,7 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <!-- Customize your theme here. -->
+        <item name="android:textColorHint">@android:color/black</item>
+        <item name="android:editTextColor">@android:color/black</item>
     </style>
 </resources>

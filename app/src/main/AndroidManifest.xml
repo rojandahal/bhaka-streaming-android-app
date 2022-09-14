@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.bhakamusic" >
+    package="com.example.bhakamusic">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -15,7 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BhakaMusic"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31" >
+        tools:targetApi="31">
+        <activity
+            android:name=".ui.Player.PlayerActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity2"
             android:exported="false"
@@ -31,7 +34,7 @@
             android:exported="true" />
         <activity
             android:name=".ui.SplashScreen"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,7 +44,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
-
+        <service android:name=".Services.MusicService" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

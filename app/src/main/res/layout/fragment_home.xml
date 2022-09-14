@@ -7,17 +7,54 @@
     android:background="@color/splash"
     tools:context=".ui.home.HomeFragment">
 
-    <TextView
-        android:id="@+id/text_home"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/text_home"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/music"
+            android:textAlignment="textStart"
+            android:textColor="@color/text_color_yellow"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.037" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="45dp"
+            android:layout_height="5dp"
+            android:layout_marginStart="50dp"
+            android:background="@color/text_color_yellow"/>
+
+        <SearchView
+            android:id="@+id/search"
+            android:layout_width="364dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/rounded_button"
+            android:queryHint="Search for songs,artist and album"
+            android:searchIcon="@drawable/ic_baseline_search_24"
+            android:theme="@style/SearchView"
+            android:iconifiedByDefault="false"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_margin="10dp"
+            tools:listitem="@layout/card_recyclerview" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
