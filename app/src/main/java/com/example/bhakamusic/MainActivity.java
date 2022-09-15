@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.bhakamusic.Apis.RetrofitClient;
 import com.example.bhakamusic.ModelResponse.SongsResponse;
+import com.example.bhakamusic.configs.Configs;
 import com.example.bhakamusic.ui.LoginSignup.SignUp;
 import com.example.bhakamusic.ui.SplashScreen;
 import com.google.android.exoplayer2.C;
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity  {
     private static final String TAG = "Main Activity";
     private StyledPlayerView playerView;
     private ExoPlayer player;
-    private String streamURL = "http://192.168.16.103:5000/api/songs/stream/an/ecdec6c9-3850-4587-abb3-7aab45242e2b/2e4be53d-3638-482d-a75e-a2e83f7b038a";
+    private String streamURL = Configs.BASE_URL+ "api/songs/stream/android/1e32d4aa-1e01-4072-92c5-3868b0225583/d72b5f0a-bdf0-4bfb-8079-1f3a464e3a95";
 
     @SuppressLint("JavascriptInterface")
     @Override
@@ -70,51 +71,12 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main);
         Toast.makeText(MainActivity.this, "Logged In!", Toast.LENGTH_SHORT).show();
 
-        playerView = findViewById(R.id.player_view);
-
-        DefaultExtractorsFactory extractorsFactory =
-                new DefaultExtractorsFactory()
-                        .setFlacExtractorFlags(FlacExtractor.FLAG_DISABLE_ID3_METADATA)
-                        .setConstantBitrateSeekingAlwaysEnabled(true);
-
-        DataSource.Factory dataSourceFactory = () -> {
-            DefaultHttpDataSource.Factory httpDataSourceFactory = new DefaultHttpDataSource.Factory();
-            HttpDataSource dataSource = httpDataSourceFactory.createDataSource();
-            // Set a custom authentication request header.
-            dataSource.setRequestProperty("Range", "bytes=" +0+ "-");
-            return dataSource;
-        };
-
-        ProgressiveMediaSource mediaSource = new ProgressiveMediaSource.Factory(
-                dataSourceFactory,extractorsFactory)
-                .setContinueLoadingCheckIntervalBytes(1)
-                .createMediaSource(MediaItem.fromUri(streamURL));
-
-        player = new ExoPlayer.Builder(this)
-                .setMediaSourceFactory(
-                        new DefaultMediaSourceFactory(this, extractorsFactory))
-                .build();
-        playerView.setPlayer(player);
-        // Set the media source to be AA
-        player.setMediaSource(mediaSource);
-        // Prepare the player.
-        player.prepare();
-        player.play();
-
-        player.addListener(new Player.Listener() {
-            @Override
-            public void onTimelineChanged(Timeline timeline, int reason) {
-
-            }
-        });
-        Log.d(TAG, "onCreate: " + mediaSource.getMediaItem());
 
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        player.release();
     }
 
 }

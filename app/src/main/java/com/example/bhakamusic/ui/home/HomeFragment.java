@@ -6,12 +6,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -27,6 +29,8 @@ import com.example.bhakamusic.ModelResponse.SongsResponse;
 import com.example.bhakamusic.R;
 import com.example.bhakamusic.databinding.FragmentHomeBinding;
 import com.example.bhakamusic.ui.Player.PlayerActivity;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.Player;
 
 
 import java.util.ArrayList;
@@ -45,7 +49,6 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
     private RecyclerView recyclerView;
     private SongRecyclerAdapter recyclerAdapter;
     private SearchView searchView;
-    private CardView songCard;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -56,14 +59,19 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
 
         recyclerView = root.findViewById(R.id.recyclerView);
         searchView = root.findViewById(R.id.search);
-        songCard = root.findViewById(R.id.songCard);
 
         recyclerAdapter = new SongRecyclerAdapter(songList,this);
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
 
+        //player controls
+        playerControls();
         searchItem();
 
         return root;
+    }
+
+    private void playerControls() {
+        
     }
 
     private void searchItem() {
@@ -93,7 +101,6 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
                                     for (SearchResponse rs : response.body()) {
                                         Log.d(TAG, "onResponse: SONG" + rs.getTitle());
                                         songList.add(rs);
-
                                     }
                                 }
                             }
@@ -134,7 +141,9 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
     @Override
     public void onItemClick(int position) {
         Intent intent = new Intent(getContext(), PlayerActivity.class);
-        intent.putExtra("id",songList.get(position).toString());
+        SearchResponse response = songList.get(position);
+        intent.putExtra("id",response.getId());
+        intent.putExtra("user","d72b5f0a-bdf0-4bfb-8079-1f3a464e3a95");
         startActivity(intent);
 
     }

@@ -13,4 +13,12 @@
     <string name="title_notifications">Account</string>
     <string name="music">Music</string>
     <string name="song_name">Song Name</string>
+    <string name="current_playing_song_name">No Song playing currently</string>
+    <string name="artistname">ArtistName</string>
+    <string name="position">0:00</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="song_title_name">Song Title Name</string>
+    <string name="ablum_name">Ablum Name</string>
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

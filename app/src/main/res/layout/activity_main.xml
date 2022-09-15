@@ -6,18 +6,5 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_x="119dp"
-        android:layout_y="8dp"
-        android:orientation="vertical">
 
-        <com.google.android.exoplayer2.ui.StyledPlayerView
-            android:id="@+id/player_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:show_buffering="when_playing"
-            app:show_shuffle_button="true"/>
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

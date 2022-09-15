@@ -12,9 +12,11 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.bhakamusic.configs.Configs;
+
 import java.io.IOException;
 
-public class MusicService extends Service {
+public class MusicService extends Service implements MediaPlayer.OnPreparedListener {
     private static final String TAG = "SERVICE";
     MediaPlayer mediaPlayer;
     @Nullable
@@ -25,7 +27,7 @@ public class MusicService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String url = "http://192.168.1.83:5000/api/songs/stream/ecdec6c9-3850-4587-abb3-7aab45242e2b/2e4be53d-3638-482d-a75e-a2e83f7b038a";
+        String url = Configs.BASE_URL+ "api/songs/stream/android/1e32d4aa-1e01-4072-92c5-3868b0225583/d72b5f0a-bdf0-4bfb-8079-1f3a464e3a95";
 
         if (mediaPlayer==null)
             mediaPlayer = new MediaPlayer();
@@ -39,15 +41,10 @@ public class MusicService extends Service {
             );
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.setDataSource(url);
-            mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
-                @Override
-                public void onBufferingUpdate(MediaPlayer mediaPlayer, int i) {
-                    Log.d(TAG, "onBufferingUpdate: BUFFERING" + i);
-                }
-            });
-            mediaPlayer.prepare();
+            mediaPlayer.setOnPreparedListener(this);
+            mediaPlayer.prepareAsync();
             mediaPlayer.setLooping(false);
-            mediaPlayer.start();
+
         }catch (IOException e) {
             Log.d(TAG, "onStartCommand: Error in playing sound" + e.toString());
             e.printStackTrace();
@@ -62,4 +59,8 @@ public class MusicService extends Service {
         super.onDestroy();
     }
 
+    @Override
+    public void onPrepared(MediaPlayer mediaPlayer) {
+        mediaPlayer.start();
+    }
 }
