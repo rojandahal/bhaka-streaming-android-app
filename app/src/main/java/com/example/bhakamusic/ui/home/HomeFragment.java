@@ -1,40 +1,37 @@
 package com.example.bhakamusic.ui.home;
 
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+
 import android.widget.SearchView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
+
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bhakamusic.Apis.RetrofitClient;
 import com.example.bhakamusic.Interface.RecyclerViewInterface;
-import com.example.bhakamusic.MainActivity2;
 import com.example.bhakamusic.ModelResponse.SearchRequest;
 import com.example.bhakamusic.ModelResponse.SearchResponse;
-import com.example.bhakamusic.ModelResponse.SongsResponse;
+
+import com.example.bhakamusic.PlayerFragment;
 import com.example.bhakamusic.R;
 import com.example.bhakamusic.databinding.FragmentHomeBinding;
-import com.example.bhakamusic.ui.Player.PlayerActivity;
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.Player;
+;
 
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,11 +41,11 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
 
     private FragmentHomeBinding binding;
     private static final String TAG = "HOME FRAGMENT";
-
     private ArrayList<SearchResponse> songList;
     private RecyclerView recyclerView;
     private SongRecyclerAdapter recyclerAdapter;
     private SearchView searchView;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -63,16 +60,12 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
         recyclerAdapter = new SongRecyclerAdapter(songList,this);
         recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
 
-        //player controls
-        playerControls();
         searchItem();
 
         return root;
     }
 
-    private void playerControls() {
-        
-    }
+
 
     private void searchItem() {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -121,17 +114,6 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
 
     }
 
-//    private void createData() {
-//        songList.add(new SearchResponse("1d7da5bf-1e39-4d26-80ad-c25fa8995567",
-//                "Bad Habits",
-//                "BLACKPINK",
-//                "uploads/images/69cd0030-337b-11ed-9441-49e069f9941e.jpg"));
-//        songList.add(new SearchResponse("cae07979-0e4c-4c31-a5d8-2cfc435291e0",
-//                "First Times",
-//                "BLACKPINK",
-//                "uploads/images/69cd0030-337b-11ed-9441-49e069f9941e.jpg"));
-//    }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -140,11 +122,21 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
 
     @Override
     public void onItemClick(int position) {
-        Intent intent = new Intent(getContext(), PlayerActivity.class);
         SearchResponse response = songList.get(position);
-        intent.putExtra("id",response.getId());
-        intent.putExtra("user","d72b5f0a-bdf0-4bfb-8079-1f3a464e3a95");
-        startActivity(intent);
+        Bundle bundle = new Bundle();
+        bundle.putString("id",response.getId());
+        bundle.putString("user","d72b5f0a-bdf0-4bfb-8079-1f3a464e3a95");
+        bundle.putString("title", response.getTitle());
+        bundle.putString("cover",response.getCoverArt());
+        bundle.putString("artist",response.getArtist());
+
+        searchView.clearFocus();
+        PlayerFragment playerFrag= new PlayerFragment();
+        playerFrag.setArguments(bundle);
+        requireActivity().getSupportFragmentManager().beginTransaction()
+                .replace(((ViewGroup) requireView().getParent()).getId(), playerFrag, "findThisFragment")
+                .addToBackStack(null)
+                .commit();
 
     }
 }

@@ -1,11 +1,13 @@
 package com.example.bhakamusic.ui.home;
 
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +21,7 @@ import com.example.bhakamusic.configs.Configs;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class SongRecyclerAdapter extends RecyclerView.Adapter<SongRecyclerAdapter.ViewHolder> implements RecyclerViewInterface {
 
@@ -47,6 +50,13 @@ public class SongRecyclerAdapter extends RecyclerView.Adapter<SongRecyclerAdapte
         holder.artistName.setText(song.getArtist());
         Picasso.get().load(Configs.BASE_URL+song.getCoverArt()).into(holder.imageView);
 
+        holder.favourite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Objects.requireNonNull(holder).favourite.setImageResource(R.drawable.ic_baseline_favorite_24);
+                Toast.makeText(view.getContext(), "Favourite Added!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -64,12 +74,14 @@ public class SongRecyclerAdapter extends RecyclerView.Adapter<SongRecyclerAdapte
         TextView songTitle;
         TextView artistName;
         ImageView imageView;
+        ImageView favourite;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             songTitle = itemView.findViewById(R.id.songTitle);
             artistName = itemView.findViewById(R.id.artistName);
             imageView = itemView.findViewById(R.id.albumImage);
+            favourite = itemView.findViewById(R.id.favourite);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
