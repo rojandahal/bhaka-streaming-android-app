@@ -22,7 +22,7 @@ public interface Api {
     @POST("api/users/signin")
     Call<RegisterResponse> login(@Body LoginRequest loginRequest);
 
-    @GET("api/songs/d96888e4-0c7e-4feb-af75-51d282826c4e")
+    @GET("api/songs/ecdec6c9-3850-4587-abb3-7aab45242e2b")
     Call<SongsResponse> song();
 
     @POST("api/songs/search")

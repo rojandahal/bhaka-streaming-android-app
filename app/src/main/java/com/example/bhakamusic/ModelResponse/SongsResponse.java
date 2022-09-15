@@ -14,26 +14,6 @@ public class SongsResponse {
     String songSize;
     String songSizeLossy;
 
-    public SongsResponse(String title, String duration, String artist, String[] featuredArtist, String[] genre, String album, String release, String playCount, String likes, String coverArt, String songSize, String songSizeLossy) {
-        this.title = title;
-        this.duration = duration;
-        this.artist = artist;
-        this.featuredArtist = featuredArtist;
-        this.genre = genre;
-        this.album = album;
-        this.release = release;
-        this.playCount = playCount;
-        this.likes = likes;
-        this.coverArt = coverArt;
-        this.songSize = songSize;
-        this.songSizeLossy = songSizeLossy;
-    }
-
-    public SongsResponse(String title, String artist) {
-        this.title = title;
-        this.artist = artist;
-    }
-
     public String getTitle() {
         return title;
     }

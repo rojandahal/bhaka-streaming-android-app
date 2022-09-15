@@ -15,6 +15,7 @@ import com.example.bhakamusic.ModelResponse.SearchRequest;
 import com.example.bhakamusic.ModelResponse.SearchResponse;
 import com.example.bhakamusic.ModelResponse.SongsResponse;
 import com.example.bhakamusic.R;
+import com.example.bhakamusic.configs.Configs;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class SongRecyclerAdapter extends RecyclerView.Adapter<SongRecyclerAdapte
         SearchResponse song = songList.get(position);
         holder.songTitle.setText(song.getTitle());
         holder.artistName.setText(song.getArtist());
-        Picasso.get().load("https://i.imgur.com/DvpvklR.png").into(holder.imageView);
+        Picasso.get().load(Configs.BASE_URL+song.getCoverArt()).into(holder.imageView);
 
     }
 
