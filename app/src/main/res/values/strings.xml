@@ -19,6 +19,10 @@
     <string name="now_playing">Now Playing</string>
     <string name="song_title_name">Song Title Name</string>
     <string name="ablum_name">Ablum Name</string>
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="favourite">Favourite</string>
+    <string name="library">Library</string>
+    <string name="playlist">Playlist</string>
+    <string name="recently_streamed">Recently Streamed</string>
 </resources>

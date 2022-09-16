@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/splash">
+    android:background="@color/splash"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/albumImage"
+                    android:id="@+id/fav_songImage"
                     android:layout_width="110dp"
                     android:layout_height="match_parent"
                     tools:srcCompat="@tools:sample/avatars" />
@@ -45,7 +45,7 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
                     <TextView
-                        android:id="@+id/songTitle"
+                        android:id="@+id/fav_songTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
@@ -55,7 +55,7 @@
                         android:text="@string/song_name" />
 
                     <TextView
-                        android:id="@+id/artistName"
+                        android:id="@+id/fav_artistName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/cambo"
@@ -68,18 +68,28 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
                     <ImageView
-                        android:id="@+id/favourite"
+                        android:id="@+id/fav_favourite"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_favourite_unclick"
+                        android:src="@drawable/ic_baseline_favorite_24"
                         android:layout_gravity="center"/>
+                    <TextView
+                        android:id="@+id/fav_songDuration"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:layout_marginTop="5dp"
+                        android:textSize="20sp"
+                        android:text="@string/position"/>
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

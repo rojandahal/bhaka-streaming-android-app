@@ -1,6 +1,10 @@
-package com.example.bhakamusic;
+package com.example.bhakamusic.ui.Player;
 
+import android.annotation.SuppressLint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -10,6 +14,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.bhakamusic.ModelResponse.SearchResponse;
+import com.example.bhakamusic.R;
+import com.example.bhakamusic.RoomDatabase.FavouriteDB;
+import com.example.bhakamusic.RoomDatabase.FavouriteData;
 import com.example.bhakamusic.configs.Configs;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
@@ -23,7 +31,12 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.squareup.picasso.Picasso;
 
-public class PlayerFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+
+public class PlayerFragment extends Fragment implements View.OnClickListener {
 
     private static final String SONG_ID = "id";
     private static final String USER = "user";
@@ -36,8 +49,9 @@ public class PlayerFragment extends Fragment {
     private ExoPlayer player;
     private String streamURL = Configs.BASE_URL+ Configs.streamApiEndpoint;
     String id,user,cover,artist,title;
-    ImageView backBtn;
-
+    ImageView backBtn,favBtn;
+    List<FavouriteData> favouriteList = new ArrayList<>();
+    FavouriteDB favDB;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,7 +63,12 @@ public class PlayerFragment extends Fragment {
         ImageView coverPic = view.findViewById(R.id.coverPhoto);
         TextView songName = view.findViewById(R.id.artistPlayerName);
         TextView artistName = view.findViewById(R.id.albumName);
-        Log.d(TAG, "onCreateView: " + Configs.BASE_URL+cover);
+        favBtn = view.findViewById(R.id.player_fav);
+
+        //Get Database context
+        favDB = FavouriteDB.getInstance(getContext());
+        //Get data list
+        favouriteList = favDB.favDao().getAll();
 
         if( getArguments()!=null){
             id = getArguments().getString(SONG_ID);
@@ -60,6 +79,7 @@ public class PlayerFragment extends Fragment {
         }
 
         streamURL = streamURL + id +"/" + user;
+//        Log.d(TAG, "onCreateView: " + Configs.BASE_URL+cover);
 
         DefaultExtractorsFactory extractorsFactory =
                 new DefaultExtractorsFactory()
@@ -104,19 +124,60 @@ public class PlayerFragment extends Fragment {
         player.prepare();
         player.play();
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                requireActivity().getSupportFragmentManager().popBackStack();
+        backBtn.setOnClickListener(this);
+        favBtn.setOnClickListener(this);
+
+        for(FavouriteData data: favouriteList){
+            if(Objects.equals(id, data.getSongId())){
+                favBtn.setImageResource(R.drawable.ic_baseline_favorite_24);
             }
-        });
+        }
 
         return view;
     }
+
 
     @Override
     public void onStop() {
         super.onStop();
         player.release();
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()){
+            case R.id.player_back:
+                requireActivity().getSupportFragmentManager().popBackStack();
+                break;
+            case R.id.player_fav:
+                    //Do something
+                long duration = Objects.requireNonNull(playerView.getPlayer()).getDuration();
+                FavouriteData data = new FavouriteData();
+                data.setSongId(id);
+                data.setArtistName(artist);
+                data.setCoverArt(cover);
+                data.setSongTitle(title);
+                data.setSongDuration(String.valueOf(duration));
+                Log.d(TAG, "onClick: Name"+ data.getSongTitle());
+
+                if(favouriteList.isEmpty()){
+                    favDB.favDao().insert(data);
+                    favBtn.setImageResource(R.drawable.ic_baseline_favorite_24);
+                }else {
+                    for(FavouriteData favDat: favouriteList){
+                        if(Objects.equals(id, favDat.getSongId())){
+                            favDB.favDao().delete(favDat);
+                            favBtn.setImageResource(R.drawable.ic_favourite_unclick);
+                        }else
+                        {
+                            favDB.favDao().insert(data);
+                            favBtn.setImageResource(R.drawable.ic_baseline_favorite_24);
+                        }
+                    }
+                }
+                break;
+
+        }
     }
 }

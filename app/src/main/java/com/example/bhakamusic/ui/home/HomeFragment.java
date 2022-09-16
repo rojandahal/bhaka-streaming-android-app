@@ -11,7 +11,6 @@ import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,16 +21,14 @@ import com.example.bhakamusic.Interface.RecyclerViewInterface;
 import com.example.bhakamusic.ModelResponse.SearchRequest;
 import com.example.bhakamusic.ModelResponse.SearchResponse;
 
-import com.example.bhakamusic.PlayerFragment;
+import com.example.bhakamusic.ui.Player.PlayerFragment;
 import com.example.bhakamusic.R;
 import com.example.bhakamusic.databinding.FragmentHomeBinding;
-import com.google.android.exoplayer2.Player;
 ;
 
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
