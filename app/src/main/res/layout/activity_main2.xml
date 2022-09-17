@@ -8,6 +8,7 @@
     android:background="@color/splash">
     <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_gravity="end"
         android:layout_height="match_parent">
 
         <fragment
@@ -15,22 +16,55 @@
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/mini_player_view"
+            android:layout_above="@id/mini_player_layout"
             app:defaultNavHost="true"
             app:navGraph="@navigation/mobile_navigation2" />
 
-        <com.google.android.exoplayer2.ui.PlayerControlView
-            android:id="@+id/mini_player_view"
+        <LinearLayout
+            android:id="@+id/mini_player_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/nav_view"
-            android:clickable="true"
-            android:focusable="true"
-            app:controller_layout_id="@layout/mini_player_view"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_above="@id/nav_view">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:elevation="10dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <ImageView
+                    android:id="@+id/mini_artist_image"
+                    android:layout_width="70dp"
+                    android:layout_height="60dp"
+                    android:layout_marginEnd="3dp"
+                    android:scaleType="fitStart"
+                    android:src="@drawable/ic_baseline_music" />
+
+                <TextView
+                    android:id="@+id/mini_song_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="@string/song_name"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <com.google.android.exoplayer2.ui.PlayerControlView
+                android:id="@+id/mini_player_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                app:controller_layout_id="@layout/mini_player_view"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent">
+
+            </com.google.android.exoplayer2.ui.PlayerControlView>
+        </LinearLayout>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/nav_view"

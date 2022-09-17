@@ -1,6 +1,7 @@
 package com.example.bhakamusic.ui.home;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,15 +19,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bhakamusic.Apis.RetrofitClient;
 import com.example.bhakamusic.Interface.RecyclerViewInterface;
-import com.example.bhakamusic.MainActivity2;
 import com.example.bhakamusic.ModelResponse.SearchRequest;
 import com.example.bhakamusic.ModelResponse.SearchResponse;
 
-import com.example.bhakamusic.ui.Player.PlayerFragment;
+import com.example.bhakamusic.ui.Player.PlayerActivity;
 import com.example.bhakamusic.R;
 import com.example.bhakamusic.databinding.FragmentHomeBinding;
-import com.example.bhakamusic.ui.account.AccountFragment;
-import com.google.android.exoplayer2.Player;
 ;
 
 
@@ -124,6 +122,7 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
     public void onItemClick(int position) {
         SearchResponse response = songList.get(position);
         Bundle bundle = new Bundle();
+        bundle.putString("calling-activity","HOME_FRAGMENT");
         bundle.putString("id",response.getId());
         bundle.putString("user","d72b5f0a-bdf0-4bfb-8079-1f3a464e3a95");
         bundle.putString("title", response.getTitle());
@@ -131,12 +130,9 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
         bundle.putString("artist",response.getArtist());
 
         searchView.clearFocus();
-        PlayerFragment playerFrag= new PlayerFragment();
-        playerFrag.setArguments(bundle);
-        requireActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main2, playerFrag, "findThisFragment")
-                .addToBackStack(null)
-                .commit();
+        Intent intent = new Intent(getActivity(), PlayerActivity.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
 
     }
 }
