@@ -22,7 +22,7 @@ import java.util.List;
 
 public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.ViewHolder> {
     private static final String TAG = "FAVOURITE_ADAPTER";
-    private List<FavouriteData> dataList;
+    private static List<FavouriteData> dataList;
     private Context context;
     private FavouriteDB favouriteDB;
 
@@ -33,6 +33,9 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
         notifyDataSetChanged();
     }
 
+    public static void updateList(List<FavouriteData> favouriteData) {
+        dataList = favouriteData;
+    }
 
     @NonNull
     @Override
@@ -59,7 +62,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
                 int pos = holder.getAbsoluteAdapterPosition();
                 dataList.remove(pos);
                 notifyItemRangeChanged(pos,dataList.size());
-                notifyDataSetChanged();
+                notifyItemRemoved(pos);
             }
         });
     }

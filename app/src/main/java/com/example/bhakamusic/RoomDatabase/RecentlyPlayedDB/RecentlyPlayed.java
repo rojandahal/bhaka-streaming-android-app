@@ -25,10 +25,6 @@ public class RecentlyPlayed implements Serializable {
     private String coverArt;
 
     //Data in column
-    @ColumnInfo(name = "songDuration")
-    private String songDuration;
-
-    //Data in column
     @ColumnInfo(name = "songTitle")
     private String songTitle;
 
@@ -67,13 +63,6 @@ public class RecentlyPlayed implements Serializable {
         this.coverArt = coverArt;
     }
 
-    public String getSongDuration() {
-        return songDuration;
-    }
-
-    public void setSongDuration(String songDuration) {
-        this.songDuration = songDuration;
-    }
 
     public String getSongTitle() {
         return songTitle;

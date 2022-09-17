@@ -16,7 +16,7 @@
             android:layout_height="76dp"
             android:layout_margin="10dp"
             android:theme="@style/Cardview"
-            app:cardBackgroundColor="@color/card_color"
+            app:cardBackgroundColor="@color/card_background"
             app:cardElevation="2dp"
             app:cardCornerRadius="20dp" >
 
@@ -36,7 +36,8 @@
 
                 <ImageView
                     android:id="@+id/fav_songImage"
-                    android:layout_width="110dp"
+                    android:layout_width="80dp"
+                    android:scaleType="fitStart"
                     android:layout_height="match_parent"
                     tools:srcCompat="@tools:sample/avatars" />
 

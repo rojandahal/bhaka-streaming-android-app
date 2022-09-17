@@ -16,7 +16,7 @@
             android:layout_height="76dp"
             android:layout_margin="10dp"
             android:theme="@style/Cardview"
-            app:cardBackgroundColor="@color/card_color"
+            app:cardBackgroundColor="@color/card_background"
             app:cardElevation="2dp"
             app:cardCornerRadius="20dp" >
 

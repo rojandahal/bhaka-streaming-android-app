@@ -18,12 +18,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bhakamusic.Apis.RetrofitClient;
 import com.example.bhakamusic.Interface.RecyclerViewInterface;
+import com.example.bhakamusic.MainActivity2;
 import com.example.bhakamusic.ModelResponse.SearchRequest;
 import com.example.bhakamusic.ModelResponse.SearchResponse;
 
 import com.example.bhakamusic.ui.Player.PlayerFragment;
 import com.example.bhakamusic.R;
 import com.example.bhakamusic.databinding.FragmentHomeBinding;
+import com.example.bhakamusic.ui.account.AccountFragment;
+import com.google.android.exoplayer2.Player;
 ;
 
 
@@ -131,7 +134,7 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
         PlayerFragment playerFrag= new PlayerFragment();
         playerFrag.setArguments(bundle);
         requireActivity().getSupportFragmentManager().beginTransaction()
-                .replace(((ViewGroup) requireView().getParent()).getId(), playerFrag, "findThisFragment")
+                .replace(R.id.nav_host_fragment_activity_main2, playerFrag, "findThisFragment")
                 .addToBackStack(null)
                 .commit();
 

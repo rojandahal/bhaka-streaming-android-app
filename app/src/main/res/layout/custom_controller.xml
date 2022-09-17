@@ -102,15 +102,4 @@
             app:drawableStartCompat="@drawable/exo_controls_next" />
 
     </LinearLayout>
-
-
-
-
-
-
-
-
-
-
-
 </RelativeLayout>

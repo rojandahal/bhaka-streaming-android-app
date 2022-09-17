@@ -18,7 +18,10 @@ import com.example.bhakamusic.ModelResponse.SearchResponse;
 import com.example.bhakamusic.R;
 import com.example.bhakamusic.RoomDatabase.FavouriteDB;
 import com.example.bhakamusic.RoomDatabase.FavouriteData;
+import com.example.bhakamusic.RoomDatabase.RecentlyPlayedDB.RecentlyPlayed;
+import com.example.bhakamusic.RoomDatabase.RecentlyPlayedDB.RecentlyPlayedDB;
 import com.example.bhakamusic.configs.Configs;
+import com.example.bhakamusic.ui.favourite.FavouriteAdapter;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
@@ -48,10 +51,11 @@ public class PlayerFragment extends Fragment implements View.OnClickListener {
     private PlayerControlView playerView;
     private ExoPlayer player;
     private String streamURL = Configs.BASE_URL+ Configs.streamApiEndpoint;
-    String id,user,cover,artist,title;
-    ImageView backBtn,favBtn;
+    protected String id,user,cover,artist,title;
+    protected ImageView backBtn,favBtn;
     List<FavouriteData> favouriteList = new ArrayList<>();
     FavouriteDB favDB;
+    protected RecentlyPlayedDB recentlyPlayedDB;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,11 +68,12 @@ public class PlayerFragment extends Fragment implements View.OnClickListener {
         TextView songName = view.findViewById(R.id.artistPlayerName);
         TextView artistName = view.findViewById(R.id.albumName);
         favBtn = view.findViewById(R.id.player_fav);
-
+        player = Player.getExoPlayer(getActivity());
         //Get Database context
         favDB = FavouriteDB.getInstance(getContext());
         //Get data list
         favouriteList = favDB.favDao().getAll();
+        recentlyPlayedDB = RecentlyPlayedDB.getInstance(getContext());
 
         if( getArguments()!=null){
             id = getArguments().getString(SONG_ID);
@@ -79,12 +84,8 @@ public class PlayerFragment extends Fragment implements View.OnClickListener {
         }
 
         streamURL = streamURL + id +"/" + user;
-//        Log.d(TAG, "onCreateView: " + Configs.BASE_URL+cover);
 
-        DefaultExtractorsFactory extractorsFactory =
-                new DefaultExtractorsFactory()
-                        .setFlacExtractorFlags(FlacExtractor.FLAG_DISABLE_ID3_METADATA)
-                        .setConstantBitrateSeekingAlwaysEnabled(true);
+        DefaultExtractorsFactory extractorsFactory = Player.getExtractorsFactory();
 
         DataSource.Factory dataSourceFactory = () -> {
             DefaultHttpDataSource.Factory httpDataSourceFactory = new DefaultHttpDataSource.Factory();
@@ -99,11 +100,6 @@ public class PlayerFragment extends Fragment implements View.OnClickListener {
                 .setContinueLoadingCheckIntervalBytes(1)
                 .createMediaSource(MediaItem.fromUri(streamURL));
 
-        player = new ExoPlayer.Builder(requireContext())
-                .setMediaSourceFactory(
-                        new DefaultMediaSourceFactory(requireContext(), extractorsFactory))
-                .build();
-
         playerView.setPlayer(player);
         //Set Song Details
         Picasso.get().load(Configs.BASE_URL+cover).into(coverPic);
@@ -113,14 +109,6 @@ public class PlayerFragment extends Fragment implements View.OnClickListener {
         // Set the media source to be a source
         player.setMediaSource(mediaSource);
 
-        //Add to playlist of mediaSource
-        player.addMediaSource(new ProgressiveMediaSource.Factory(
-                dataSourceFactory,extractorsFactory)
-                .setContinueLoadingCheckIntervalBytes(1)
-                .createMediaSource(MediaItem.fromUri(Configs.BASE_URL+Configs.streamApiEndpoint+ "51fa4c30-22eb-4749-8ba5-ddcec8ef6c16" +
-                        "/" + user)
-                ));
-        // Prepare the player.
         player.prepare();
         player.play();
 
@@ -140,7 +128,12 @@ public class PlayerFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onStop() {
         super.onStop();
-        player.release();
+        RecentlyPlayed recentlyPlayed = new RecentlyPlayed();
+        recentlyPlayed.setArtistName(artist);
+        recentlyPlayed.setSongTitle(title);
+        recentlyPlayed.setCoverArt(cover);
+        recentlyPlayed.setSongId(id);
+        recentlyPlayedDB.recentlyDao().insert(recentlyPlayed);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -152,22 +145,22 @@ public class PlayerFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.player_fav:
                     //Do something
-                long duration = Objects.requireNonNull(playerView.getPlayer()).getDuration();
+                long millis = Objects.requireNonNull(playerView.getPlayer()).getDuration();
+                long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
+                long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
+                String duration = minutes + ":" + seconds;
                 FavouriteData data = new FavouriteData();
                 data.setSongId(id);
                 data.setArtistName(artist);
                 data.setCoverArt(cover);
                 data.setSongTitle(title);
-                data.setSongDuration(String.valueOf(duration));
+                data.setSongDuration(duration);
                 Log.d(TAG, "onClick: Name"+ data.getSongTitle());
 
-                if(favouriteList.isEmpty()){
-                    favDB.favDao().insert(data);
-                    favBtn.setImageResource(R.drawable.ic_baseline_favorite_24);
-                }else {
-                    for(FavouriteData favDat: favouriteList){
+                for(FavouriteData favDat: favouriteList){
                         if(Objects.equals(id, favDat.getSongId())){
                             favDB.favDao().delete(favDat);
+                            favouriteList.remove(favDat);
                             favBtn.setImageResource(R.drawable.ic_favourite_unclick);
                         }else
                         {
@@ -175,7 +168,6 @@ public class PlayerFragment extends Fragment implements View.OnClickListener {
                             favBtn.setImageResource(R.drawable.ic_baseline_favorite_24);
                         }
                     }
-                }
                 break;
 
         }
