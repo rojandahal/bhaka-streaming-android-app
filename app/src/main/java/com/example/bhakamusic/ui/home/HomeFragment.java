@@ -128,7 +128,6 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
         bundle.putString("title", response.getTitle());
         bundle.putString("cover",response.getCoverArt());
         bundle.putString("artist",response.getArtist());
-
         searchView.clearFocus();
         Intent intent = new Intent(getActivity(), PlayerActivity.class);
         intent.putExtras(bundle);
