@@ -25,4 +25,5 @@
     <string name="library">Library</string>
     <string name="playlist">Playlist</string>
     <string name="recently_streamed">Recently Streamed</string>
+    <string name="main_activity">MAIN_ACTIVITY</string>
 </resources>
