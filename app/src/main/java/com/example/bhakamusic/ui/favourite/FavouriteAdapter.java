@@ -2,6 +2,8 @@ package com.example.bhakamusic.ui.favourite;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import com.example.bhakamusic.R;
 import com.example.bhakamusic.RoomDatabase.FavouriteDB;
 import com.example.bhakamusic.RoomDatabase.FavouriteData;
 import com.example.bhakamusic.configs.Configs;
+import com.example.bhakamusic.ui.Player.PlayerActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -59,6 +62,22 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
                 dataList.remove(pos);
                 notifyItemRangeChanged(pos,dataList.size());
                 notifyItemRemoved(pos);
+            }
+        });
+
+        holder.songImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FavouriteData fv = dataList.get(holder.getAbsoluteAdapterPosition());
+                Bundle bundle = new Bundle();
+                bundle.putString("id",fv.getSongId());
+                bundle.putString("user","d72b5f0a-bdf0-4bfb-8079-1f3a464e3a95");
+                bundle.putString("title", fv.getSongTitle());
+                bundle.putString("cover",fv.getCoverArt());
+                bundle.putString("artist",fv.getArtistName());
+                Intent intent = new Intent(view.getContext(), PlayerActivity.class);
+                intent.putExtras(bundle);
+                view.getContext().startActivity(intent);
             }
         });
     }
