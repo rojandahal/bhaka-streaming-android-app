@@ -24,6 +24,7 @@
         <entry key="..\:/Bhaka/BhakaMusic/app/src/main/res/drawable/library_foreground.xml" value="0.1905" />
         <entry key="..\:/Bhaka/BhakaMusic/app/src/main/res/drawable/logo.xml" value="0.1975" />
         <entry key="..\:/Bhaka/BhakaMusic/app/src/main/res/drawable/navigation_view_color.xml" value="0.2235" />
+        <entry key="..\:/Bhaka/BhakaMusic/app/src/main/res/drawable/pause_icon.xml" value="0.1905" />
         <entry key="..\:/Bhaka/BhakaMusic/app/src/main/res/drawable/photo_background.xml" value="0.232" />
         <entry key="..\:/Bhaka/BhakaMusic/app/src/main/res/drawable/rounded_button.xml" value="0.2295" />
         <entry key="..\:/Bhaka/BhakaMusic/app/src/main/res/drawable/search_background.xml" value="0.2585" />
@@ -45,6 +46,7 @@
         <entry key="..\:/Bhaka/BhakaMusic/app/src/main/res/layout/fragment_notifications.xml" value="0.25416666666666665" />
         <entry key="..\:/Bhaka/BhakaMusic/app/src/main/res/layout/fragment_player.xml" value="0.21981981981981982" />
         <entry key="..\:/Bhaka/BhakaMusic/app/src/main/res/layout/fragment_player_view.xml" value="0.25416666666666665" />
+        <entry key="..\:/Bhaka/BhakaMusic/app/src/main/res/layout/mini_player_view.xml" value="0.21981981981981982" />
         <entry key="..\:/Bhaka/BhakaMusic/app/src/main/res/layout/recently_played_list.xml" value="0.21891891891891893" />
         <entry key="..\:/Bhaka/BhakaMusic/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Bhaka/BhakaMusic/app/src/main/res/mipmap-anydpi-v26/library_photo.xml" value="0.1905" />

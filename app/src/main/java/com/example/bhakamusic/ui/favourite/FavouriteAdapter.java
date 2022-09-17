@@ -33,10 +33,6 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
         notifyDataSetChanged();
     }
 
-    public static void updateList(List<FavouriteData> favouriteData) {
-        dataList = favouriteData;
-    }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

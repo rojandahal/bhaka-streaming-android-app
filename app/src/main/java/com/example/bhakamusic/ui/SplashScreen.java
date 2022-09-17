@@ -10,6 +10,8 @@ import com.example.bhakamusic.MainActivity;
 import com.example.bhakamusic.MainActivity2;
 import com.example.bhakamusic.R;
 import com.example.bhakamusic.ui.LoginSignup.SignIn;
+import com.example.bhakamusic.ui.Player.Player;
+import com.google.android.exoplayer2.ExoPlayer;
 
 public class SplashScreen extends AppCompatActivity {
 

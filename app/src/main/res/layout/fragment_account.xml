@@ -4,90 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusable="true"
-    android:clickable="true"
     android:background="@color/splash"
-    tools:context=".ui.Player.PlayerFragment">
+    tools:context=".ui.account.AccountFragment">
 
     <TextView
-        android:id="@+id/text_playing"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="148dp"
-        android:fontFamily="@font/roboto_medium"
-        android:text="@string/now_playing"
-        android:textAlignment="textStart"
-        android:textColor="@color/text_color_yellow"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/player_back"
-        android:layout_width="38dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="72dp"
-        android:src="@drawable/ic_baseline_arrow_back_24"
-        app:layout_constraintEnd_toStartOf="@+id/text_playing"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/coverPhoto"
-        android:layout_width="276dp"
-        android:layout_height="276dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="48dp"
-        android:src="@mipmap/photo_foreground"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_playing" />
-
-    <TextView
-        android:id="@+id/artistPlayerName"
+        android:id="@+id/text_notifications"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/song_title_name"
-        android:textColor="@color/white"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:textAlignment="center"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/coverPhoto" />
-
-    <TextView
-        android:id="@+id/albumName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/ablum_name"
-        android:textAlignment="center"
-        android:textColor="@color/landingText"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/artistPlayerName" />
-
-    <ImageView
-        android:id="@+id/player_fav"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="52dp"
-        android:src="@drawable/ic_favourite_unclick"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/albumName" />
-
-    <com.google.android.exoplayer2.ui.PlayerControlView
-        android:id="@+id/player_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        app:controller_layout_id="@layout/custom_controller"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/albumName"
-        app:layout_constraintVertical_bias="0.565" />
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.466" />
 </androidx.constraintlayout.widget.ConstraintLayout>

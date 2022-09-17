@@ -1,15 +1,21 @@
 package com.example.bhakamusic.ui.Player;
 
 import android.app.Activity;
+import android.app.Application;
 
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.flac.FlacExtractor;
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory;
 
-public abstract class Player {
+public class Player extends Application {
     public static ExoPlayer exoPlayer;
     public static DefaultExtractorsFactory extractorsFactory;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+    }
 
     public static ExoPlayer getExoPlayer(Activity activity) {
         if(exoPlayer==null){

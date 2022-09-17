@@ -56,6 +56,7 @@ public class PlayerFragment extends Fragment implements View.OnClickListener {
     List<FavouriteData> favouriteList = new ArrayList<>();
     FavouriteDB favDB;
     protected RecentlyPlayedDB recentlyPlayedDB;
+    List<RecentlyPlayed> recentlyPlayedList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,6 +75,7 @@ public class PlayerFragment extends Fragment implements View.OnClickListener {
         //Get data list
         favouriteList = favDB.favDao().getAll();
         recentlyPlayedDB = RecentlyPlayedDB.getInstance(getContext());
+        recentlyPlayedList = recentlyPlayedDB.recentlyDao().getAll();
 
         if( getArguments()!=null){
             id = getArguments().getString(SONG_ID);
@@ -128,12 +130,7 @@ public class PlayerFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onStop() {
         super.onStop();
-        RecentlyPlayed recentlyPlayed = new RecentlyPlayed();
-        recentlyPlayed.setArtistName(artist);
-        recentlyPlayed.setSongTitle(title);
-        recentlyPlayed.setCoverArt(cover);
-        recentlyPlayed.setSongId(id);
-        recentlyPlayedDB.recentlyDao().insert(recentlyPlayed);
+
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -141,6 +138,21 @@ public class PlayerFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch(view.getId()){
             case R.id.player_back:
+                RecentlyPlayed recentlyPlayed = new RecentlyPlayed();
+                recentlyPlayed.setArtistName(artist);
+                recentlyPlayed.setSongTitle(title);
+                recentlyPlayed.setCoverArt(cover);
+                recentlyPlayed.setSongId(id);
+                if(recentlyPlayedList.size()<=4) {
+                    if(recentlyPlayedList.isEmpty()){
+                        recentlyPlayedDB.recentlyDao().insert(recentlyPlayed);
+                    }
+                    for(RecentlyPlayed rp: recentlyPlayedList){
+                        if(!Objects.equals(rp.getSongTitle(), title)){
+                            recentlyPlayedDB.recentlyDao().insert(recentlyPlayed);
+                        }
+                    }
+                }
                 requireActivity().getSupportFragmentManager().popBackStack();
                 break;
             case R.id.player_fav:

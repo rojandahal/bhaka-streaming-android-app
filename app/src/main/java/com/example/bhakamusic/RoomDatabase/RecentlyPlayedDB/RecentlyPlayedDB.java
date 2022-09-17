@@ -18,7 +18,7 @@ public abstract class RecentlyPlayedDB extends RoomDatabase {
     public synchronized static RecentlyPlayedDB getInstance(Context context){
         //Check if db is present
         if (INSTANCE == null) {
-            synchronized (com.example.bhakamusic.RoomDatabase.FavouriteDB.class) {
+            synchronized (RecentlyPlayedDB.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     RecentlyPlayedDB.class, DATABASE_NAME)

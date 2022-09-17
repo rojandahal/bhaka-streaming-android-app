@@ -107,10 +107,11 @@
             android:text="@string/recently_streamed"/>
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/no_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="invisible"
+            android:textAlignment="center"
             android:textColor="@color/white"
             android:text="@string/song_name" />
 
