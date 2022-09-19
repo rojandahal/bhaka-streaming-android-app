@@ -12,15 +12,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bhakamusic.Apis.RetrofitClient;
 import com.example.bhakamusic.MainActivity;
+import com.example.bhakamusic.MainActivity2;
 import com.example.bhakamusic.ModelResponse.LoginRequest;
 import com.example.bhakamusic.ModelResponse.RegisterRequest;
 import com.example.bhakamusic.ModelResponse.RegisterResponse;
 import com.example.bhakamusic.R;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,12 +38,11 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
     private Button signIn;
     private Button signUp;
     ProgressBar progressBar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
         signIn = findViewById(R.id.signin_button_signin);
         signUp = findViewById(R.id.signup_button_signin);
         username = findViewById(R.id.editTextUsernameSignin);
@@ -87,19 +90,27 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
                 .login(loginRequest);
 
         call.enqueue(new Callback<RegisterResponse>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
                 RegisterResponse rs = response.body();
                 if(response.isSuccessful()){
                     assert rs != null;
-//                    Log.d(TAG, "onResponse: " + rs.getToken());
-                    Intent intent = new Intent(SignIn.this, MainActivity.class);
+                    Log.d(TAG, "onResponseIN: "+ rs.getToken());
+                    //Shared preference
+                    SharedPreferences sharedPref = getApplication().getSharedPreferences(String.valueOf(R.string.token_sharedpref),Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString(String.valueOf(R.string.token),rs.getToken());
+                    editor.apply();
+                    Intent intent = new Intent(SignIn.this, MainActivity2.class);
                     intent.putExtra("token",rs.getToken());
                     signIn.setEnabled(true);
                     signUp.setEnabled(true);
                     progressBar.setVisibility(View.INVISIBLE);
                     startActivity(intent);
                 }else {
+                    username.setError("Invalid Credentials!");
+                    password.setError("Invalid Credentials!");
                     signIn.setEnabled(true);
                     signUp.setEnabled(true);
                     progressBar.setVisibility(View.INVISIBLE);

@@ -6,12 +6,16 @@ import com.example.bhakamusic.ModelResponse.RegisterResponse;
 import com.example.bhakamusic.ModelResponse.SearchRequest;
 import com.example.bhakamusic.ModelResponse.SearchResponse;
 import com.example.bhakamusic.ModelResponse.SongsResponse;
+import com.example.bhakamusic.ModelResponse.UserResponse;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 
 public interface Api {
@@ -28,5 +32,10 @@ public interface Api {
     @POST("api/songs/search")
     Call<List<SearchResponse>> searchSong(@Body SearchRequest searchRequest);
 
+    @GET("api/users")
+    Call<UserResponse> getUserDetails(@Header("Authorization") String authToken);
+
+    @PATCH("api/users/change-preference")
+    Call<ResponseBody> getPreferenceChange(@Header("Authorization") String authToken);
 
 }

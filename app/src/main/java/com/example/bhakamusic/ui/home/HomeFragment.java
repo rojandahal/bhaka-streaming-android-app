@@ -1,7 +1,9 @@
 package com.example.bhakamusic.ui.home;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -124,7 +126,7 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
         Bundle bundle = new Bundle();
         bundle.putString("calling-activity","HOME_FRAGMENT");
         bundle.putString("id",response.getId());
-        bundle.putString("user","d72b5f0a-bdf0-4bfb-8079-1f3a464e3a95");
+        bundle.putString("user", "4d516d8b-864c-47e8-99cb-934433925298");
         bundle.putString("title", response.getTitle());
         bundle.putString("cover",response.getCoverArt());
         bundle.putString("artist",response.getArtist());

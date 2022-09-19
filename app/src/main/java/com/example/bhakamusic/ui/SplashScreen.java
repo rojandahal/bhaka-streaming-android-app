@@ -2,16 +2,23 @@ package com.example.bhakamusic.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import com.example.bhakamusic.MainActivity;
 import com.example.bhakamusic.MainActivity2;
 import com.example.bhakamusic.R;
+import com.example.bhakamusic.RoomDatabase.UserDB.UserCredentials;
 import com.example.bhakamusic.ui.LoginSignup.SignIn;
+import com.example.bhakamusic.ui.LoginSignup.SignUp;
 import com.example.bhakamusic.ui.Player.Player;
 import com.google.android.exoplayer2.ExoPlayer;
+
+import java.util.Objects;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -24,7 +31,16 @@ public class SplashScreen extends AppCompatActivity {
             @Override
             public void run() {
                 //Start Activity when all data is fetched
-                startActivity(new Intent(SplashScreen.this, MainActivity2.class));
+                //Shared preference to store token and username and userID
+                SharedPreferences sharedPref = getApplication().getSharedPreferences(String.valueOf(R.string.token_sharedpref), Context.MODE_PRIVATE);
+                String token = sharedPref.getString(String.valueOf(R.string.token),"token");
+                Log.d("LD", "onClick: " + token);
+                if(Objects.equals(token, "token")){
+                    startActivity(new Intent(SplashScreen.this, LandingPage.class));
+                }else{
+                    startActivity(new Intent(SplashScreen.this, MainActivity2.class));
+                    UserCredentials.setToken(token);
+                }
                 finish();
             }
         }, 2000);

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.bhakamusic.MainActivity;
 import com.example.bhakamusic.R;
 import com.example.bhakamusic.ui.LoginSignup.SignUp;
 
@@ -23,7 +22,7 @@ public class LandingPage extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LandingPage.this, SignUp.class));
+                startActivity(new Intent(LandingPage.this,SignUp.class));
             }
         });
     }

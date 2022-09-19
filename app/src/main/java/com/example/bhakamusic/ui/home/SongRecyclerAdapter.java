@@ -50,13 +50,6 @@ public class SongRecyclerAdapter extends RecyclerView.Adapter<SongRecyclerAdapte
         holder.artistName.setText(song.getArtist());
         Picasso.get().load(Configs.BASE_URL+song.getCoverArt()).into(holder.imageView);
 
-        holder.favourite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Objects.requireNonNull(holder).favourite.setImageResource(R.drawable.ic_baseline_favorite_24);
-                Toast.makeText(view.getContext(), "Favourite Added!", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override

@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,8 +17,8 @@ import com.example.bhakamusic.RoomDatabase.FavouriteDB;
 import com.example.bhakamusic.RoomDatabase.FavouriteData;
 import com.example.bhakamusic.RoomDatabase.RecentlyPlayedDB.RecentlyPlayed;
 import com.example.bhakamusic.RoomDatabase.RecentlyPlayedDB.RecentlyPlayedDB;
+import com.example.bhakamusic.RoomDatabase.UserDB.UserCredentials;
 import com.example.bhakamusic.configs.Configs;
-import com.example.bhakamusic.ui.SplashScreen;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Tracks;
@@ -43,12 +42,12 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     private static final String SONG_TITLE = "title";
     private static final String SONG_ARTIST = "artist";
     private static final String SONG_COVER = "cover";
-
+    protected String user = UserCredentials.getId();
     private static final String TAG = "Main Activity";
     private PlayerControlView playerView;
     private ExoPlayer player;
     private String streamURL = Configs.BASE_URL + Configs.streamApiEndpoint;
-    protected String id, user, cover, artist, title;
+    protected String id, cover, artist, title;
     protected ImageView backBtn, favBtn;
     List<FavouriteData> favouriteList = new ArrayList<>();
     FavouriteDB favDB;
@@ -79,11 +78,16 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         recentlyPlayedDB = RecentlyPlayedDB.getInstance(this);
         recentlyPlayedList = recentlyPlayedDB.recentlyDao().getAll();
 
-        getIntentData();
-        initializePlayer();
-        setPlayerView();
+        if((!Objects.equals(getIntent().getExtras().getString("calling-activity"), getString(R.string.favourite_activity)))){
+            getIntentData();
+            initializePlayer();
+            setPlayerView();
+        }else{
+            getIntentData();
+            setPlayerView();
+            favouritePlaying();
+        }
 
-        checkPlayingSong();
         backBtn.setOnClickListener(this);
         favBtn.setOnClickListener(this);
 
@@ -96,7 +100,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void checkPlayingSong() {
+    private void favouritePlaying() {
         player.addListener(new com.google.android.exoplayer2.Player.Listener() {
             @Override
             public void onTracksChanged(@NonNull Tracks tracks) {
@@ -114,7 +118,6 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     private void getIntentData() {
         if (getIntent() != null) {
             id = getIntent().getExtras().getString(SONG_ID);
-            user = getIntent().getExtras().getString(USER);
             title = getIntent().getExtras().getString(SONG_TITLE);
             artist = getIntent().getExtras().getString(SONG_ARTIST);
             cover = getIntent().getExtras().getString(SONG_COVER);
@@ -162,20 +165,25 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Bundle bundle = new Bundle();
+        bundle.putString("id", id);
+        bundle.putString("title", title);
+        bundle.putString("cover", cover);
+        bundle.putString("artist", artist);
+        Intent intent = new Intent(this, MainActivity2.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.player_back:
-                Bundle bundle = new Bundle();
-                bundle.putString("id", id);
-                bundle.putString("user", "d72b5f0a-bdf0-4bfb-8079-1f3a464e3a95");
-                bundle.putString("title", title);
-                bundle.putString("cover", cover);
-                bundle.putString("artist", artist);
-                Intent intent = new Intent(this, MainActivity2.class);
-                intent.putExtras(bundle);
-                startActivity(intent);
+                onBackPressed();
                 break;
             case R.id.player_fav:
                 //Do something

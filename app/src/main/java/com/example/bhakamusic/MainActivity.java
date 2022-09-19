@@ -60,9 +60,6 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity  {
 
     private static final String TAG = "Main Activity";
-    private StyledPlayerView playerView;
-    private ExoPlayer player;
-    private String streamURL = Configs.BASE_URL+ "api/songs/stream/android/1e32d4aa-1e01-4072-92c5-3868b0225583/d72b5f0a-bdf0-4bfb-8079-1f3a464e3a95";
 
     @SuppressLint("JavascriptInterface")
     @Override
@@ -70,7 +67,6 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toast.makeText(MainActivity.this, "Logged In!", Toast.LENGTH_SHORT).show();
-
 
     }
 

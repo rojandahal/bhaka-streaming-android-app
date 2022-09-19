@@ -1,6 +1,8 @@
 package com.example.bhakamusic;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -8,7 +10,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.bhakamusic.Apis.RetrofitClient;
+import com.example.bhakamusic.ModelResponse.UserResponse;
 import com.example.bhakamusic.RoomDatabase.RecentlyPlayedDB.RecentlyPlayedDB;
+import com.example.bhakamusic.RoomDatabase.UserDB.UserCredentials;
 import com.example.bhakamusic.configs.Configs;
 
 import com.example.bhakamusic.databinding.ActivityMain2Binding;
@@ -28,6 +33,10 @@ import androidx.navigation.ui.NavigationUI;
 
 import java.util.Objects;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity2 extends AppCompatActivity {
 
     private static final String SONG_ID = "id";
@@ -38,7 +47,7 @@ public class MainActivity2 extends AppCompatActivity {
     public static final String TAG = "MAIN_ACTIVITY_2";
     private ActivityMain2Binding binding;
     private PlayerControlView playerControlView;
-    protected String id, cover, title,artist,user;
+    protected String id, cover, title,artist;
     private ImageView artistImage;
     private TextView songName;
     LinearLayout linearLayout;
@@ -63,10 +72,38 @@ public class MainActivity2 extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
+        //Shared preference to store token and username and userID
+        SharedPreferences sharedPref = getApplication().getSharedPreferences(String.valueOf(R.string.token_sharedpref), Context.MODE_PRIVATE);
+        String token = sharedPref.getString(getString(R.string.token),"token");
+        Log.d(TAG, "onCreate: " + token);
+        UserCredentials.setToken(token);
+
+        Call<UserResponse> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .getUserDetails("Bearer " + sharedPref.getString(getString(R.string.token),token));
+        call.enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                if(response.isSuccessful()){
+                    UserResponse userResponse = response.body();
+                    UserCredentials.setId(userResponse.getId());
+                    UserCredentials.setUsername(userResponse.getUsername());
+                    UserCredentials.setEmail(userResponse.getEmail());
+                    UserCredentials.setPreference(userResponse.getPreference());
+                    UserCredentials.setToken(token);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+
+            }
+        });
+
         try {
             if (getIntent() != null) {
                 id = getIntent().getExtras().getString(SONG_ID);
-                user = getIntent().getExtras().getString(USER);
                 title = getIntent().getExtras().getString(SONG_TITLE);
                 artist = getIntent().getExtras().getString(SONG_ARTIST);
                 cover = getIntent().getExtras().getString(SONG_COVER);
@@ -75,12 +112,10 @@ public class MainActivity2 extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Log.d(TAG, "onCreate: " + title);
         //Set data to view
         //Set Song Details
         Picasso.get().load(Configs.BASE_URL + cover).into(artistImage);
         songName.setText(title);
-        Log.d(TAG, "onCreate: ");
         //Setup player view to player
         playerControlView = findViewById(R.id.mini_player_view);
         playerControlView.setShowTimeoutMs(-1);
@@ -94,7 +129,6 @@ public class MainActivity2 extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 bundle.putString("calling-activity",getString(R.string.main_activity));
                 bundle.putString("id",id);
-                bundle.putString("user","d72b5f0a-bdf0-4bfb-8079-1f3a464e3a95");
                 bundle.putString("title",title);
                 bundle.putString("cover",cover);
                 bundle.putString("artist",artist);

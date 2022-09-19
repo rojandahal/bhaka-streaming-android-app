@@ -26,9 +26,15 @@
     <string name="playlist">Playlist</string>
     <string name="recently_streamed">Recently Streamed</string>
     <string name="main_activity">MAIN_ACTIVITY</string>
-    <string name="userID">d72b5f0a-bdf0-4bfb-8079-1f3a464e3a95</string>
+    <string name="userID">4d516d8b–864c–47e8–99cb-934433925298</string>
     <string name="username">USERNAME</string>
     <string name="contact_us">Contact Us</string>
     <string name="faqs">FAQs</string>
     <string name="setting">Setting</string>
+    <string name="favourite_activity">FAVOURITE_ACTIVITY</string>
+    <string name="preference_file_key">CREDENTIALS</string>
+    <string name="token_sharedpref">token</string>
+    <string name="logout">Logout</string>
+    <string name="settings">Settings</string>
+    <string name="opus">opus</string>
 </resources>

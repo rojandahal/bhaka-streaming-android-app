@@ -72,14 +72,13 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
             public void onClick(View view) {
                 FavouriteData fv = dataList.get(holder.getAbsoluteAdapterPosition());
                 Bundle bundle = new Bundle();
-                bundle.putString("calling-activity",context.getString(R.string.main_activity));
+                bundle.putString("calling-activity",context.getString(R.string.favourite_activity));
                 bundle.putString("id",fv.getSongId());
-                bundle.putString("user",context.getString(R.string.userID));
                 bundle.putString("title", fv.getSongTitle());
                 bundle.putString("cover",fv.getCoverArt());
                 bundle.putString("artist",fv.getArtistName());
                 PlaylistPlayer playlistPlayer = new PlaylistPlayer((Activity) context);
-                playlistPlayer.setSongs(dataList,context.getString(R.string.userID), bundle, holder.getAbsoluteAdapterPosition());
+                playlistPlayer.setSongs(dataList, bundle, holder.getAbsoluteAdapterPosition());
 
             }
         });

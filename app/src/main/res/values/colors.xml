@@ -12,4 +12,5 @@
     <color name="text_color_yellow">#F6D525</color>
     <color name="card_color">#61A6A6A6</color>
     <color name="card_background">#606060</color>
+    <color name="error_color">#FF0000</color>
 </resources>

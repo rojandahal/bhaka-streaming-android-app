@@ -59,9 +59,6 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                 break;
             case R.id.signup_button_signup:
                 registerUser();
-//                signUp.setEnabled(false);
-//                loadingBar.setVisibility(View.VISIBLE);
-//                checkEmptyFields();
                 break;
         }
     }
@@ -95,15 +92,9 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
         call.enqueue(new Callback<RegisterResponse>() {
             @Override
             public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
-                Log.d(TAG, "onResponseIN: "+ response);
                 RegisterResponse registerResponse = response.body();
                 if(response.isSuccessful()){
                     assert registerResponse != null;
-                    Log.d("SIGNUP", "onResponseIFIN: " + registerResponse.getToken());
-                    SharedPreferences sharedPref = SignUp.this.getSharedPreferences("token,",Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString(getString(R.string.token),registerResponse.getToken());
-                    editor.apply();
                     Toast.makeText(SignUp.this,"Signup Completed!",Toast.LENGTH_LONG).show();
                     signUp.setEnabled(true);
                     signIn.setEnabled(true);
