@@ -1,5 +1,6 @@
 package com.example.bhakamusic.ui.Player;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -21,6 +22,7 @@ import com.example.bhakamusic.configs.Configs;
 import com.example.bhakamusic.ui.SplashScreen;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.Tracks;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.ui.PlayerControlView;
@@ -51,7 +53,11 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     List<FavouriteData> favouriteList = new ArrayList<>();
     FavouriteDB favDB;
     protected RecentlyPlayedDB recentlyPlayedDB;
+    int index;
     List<RecentlyPlayed> recentlyPlayedList;
+    ImageView coverPic;
+    TextView songName;
+    TextView artistName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +66,9 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         Objects.requireNonNull(getSupportActionBar()).hide();
         playerView = findViewById(R.id.player_view);
         backBtn = findViewById(R.id.player_back);
-        ImageView coverPic = findViewById(R.id.coverPhoto);
-        TextView songName = findViewById(R.id.artistPlayerName);
-        TextView artistName = findViewById(R.id.albumName);
+        coverPic = findViewById(R.id.coverPhoto);
+        songName = findViewById(R.id.artistPlayerName);
+        artistName = findViewById(R.id.albumName);
         favBtn = findViewById(R.id.player_fav);
         //Get player instance
         player = Player.getExoPlayer(this);
@@ -73,18 +79,53 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         recentlyPlayedDB = RecentlyPlayedDB.getInstance(this);
         recentlyPlayedList = recentlyPlayedDB.recentlyDao().getAll();
 
+        getIntentData();
+        initializePlayer();
+        setPlayerView();
+
+        checkPlayingSong();
+        backBtn.setOnClickListener(this);
+        favBtn.setOnClickListener(this);
+
+        for (FavouriteData data : favouriteList) {
+            if (Objects.equals(id, data.getSongId())) {
+                favBtn.setImageResource(R.drawable.ic_baseline_favorite_24);
+            } else {
+                favBtn.setImageResource(R.drawable.ic_favourite_unclick);
+            }
+        }
+    }
+
+    private void checkPlayingSong() {
+        player.addListener(new com.google.android.exoplayer2.Player.Listener() {
+            @Override
+            public void onTracksChanged(@NonNull Tracks tracks) {
+                FavouriteData favouriteData = favouriteList.get(player.getCurrentMediaItemIndex());
+                title = favouriteData.getSongTitle();
+                artist = favouriteData.getArtistName();
+                cover = favouriteData.getCoverArt();
+                Picasso.get().load(Configs.BASE_URL + cover).into(coverPic);
+                songName.setText(title);
+                artistName.setText(artist);
+            }
+        });
+    }
+
+    private void getIntentData() {
         if (getIntent() != null) {
             id = getIntent().getExtras().getString(SONG_ID);
             user = getIntent().getExtras().getString(USER);
             title = getIntent().getExtras().getString(SONG_TITLE);
             artist = getIntent().getExtras().getString(SONG_ARTIST);
             cover = getIntent().getExtras().getString(SONG_COVER);
+            index= getIntent().getExtras().getInt("index");
         }
+    }
 
-        if(!Objects.equals(getIntent().getExtras().getString("calling-activity"), getString(R.string.main_activity)))
-        {
+
+    private void initializePlayer() {
+        if ((!Objects.equals(getIntent().getExtras().getString("calling-activity"), getString(R.string.main_activity)))) {
             streamURL = streamURL + id + "/" + user;
-
             DefaultExtractorsFactory extractorsFactory = Player.getExtractorsFactory();
 
             DataSource.Factory dataSourceFactory = () -> {
@@ -102,7 +143,9 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             // Set the media source to be a source
             player.setMediaSource(mediaSource);
         }
+    }
 
+    private void setPlayerView() {
         playerView.setPlayer(player);
         //Set Song Details
         Picasso.get().load(Configs.BASE_URL + cover).into(coverPic);
@@ -111,20 +154,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         playerView.setShowTimeoutMs(-1);
         player.prepare();
         player.play();
-
-        backBtn.setOnClickListener(this);
-        favBtn.setOnClickListener(this);
-
-        for (FavouriteData data : favouriteList) {
-            if (Objects.equals(id, data.getSongId())) {
-                favBtn.setImageResource(R.drawable.ic_baseline_favorite_24);
-            }
-            else{
-                favBtn.setImageResource(R.drawable.ic_favourite_unclick);
-            }
-        }
     }
-
 
     @Override
     public void onStop() {
@@ -138,11 +168,11 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         switch (view.getId()) {
             case R.id.player_back:
                 Bundle bundle = new Bundle();
-                bundle.putString("id",id);
-                bundle.putString("user","d72b5f0a-bdf0-4bfb-8079-1f3a464e3a95");
-                bundle.putString("title",title);
-                bundle.putString("cover",cover);
-                bundle.putString("artist",artist);
+                bundle.putString("id", id);
+                bundle.putString("user", "d72b5f0a-bdf0-4bfb-8079-1f3a464e3a95");
+                bundle.putString("title", title);
+                bundle.putString("cover", cover);
+                bundle.putString("artist", artist);
                 Intent intent = new Intent(this, MainActivity2.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -169,7 +199,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                         break;
                     }
                 }
-                if(!isPresent){
+                if (!isPresent) {
                     favDB.favDao().insert(data);
                     favouriteList = favDB.favDao().getAll();
                     favBtn.setImageResource(R.drawable.ic_baseline_favorite_24);

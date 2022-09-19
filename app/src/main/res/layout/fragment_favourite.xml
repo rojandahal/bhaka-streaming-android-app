@@ -29,17 +29,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/fav_back"
-                android:layout_width="38dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="36dp"
-                android:layout_marginEnd="72dp"
-                android:src="@drawable/ic_baseline_arrow_back_24"
-                app:layout_constraintEnd_toStartOf="@+id/heading_fav"
-                app:layout_constraintHorizontal_bias="0.347"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView

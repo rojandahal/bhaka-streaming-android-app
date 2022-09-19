@@ -26,4 +26,9 @@
     <string name="playlist">Playlist</string>
     <string name="recently_streamed">Recently Streamed</string>
     <string name="main_activity">MAIN_ACTIVITY</string>
+    <string name="userID">d72b5f0a-bdf0-4bfb-8079-1f3a464e3a95</string>
+    <string name="username">USERNAME</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="faqs">FAQs</string>
+    <string name="setting">Setting</string>
 </resources>

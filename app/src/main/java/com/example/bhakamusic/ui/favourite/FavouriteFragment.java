@@ -45,7 +45,7 @@ public class FavouriteFragment extends Fragment {
         //Linear layout manager
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(root.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter = new FavouriteAdapter(getContext(),favDB.favDao().getAll());
+        adapter = new FavouriteAdapter(this.getActivity(),favDB.favDao().getAll());
         recyclerView.setAdapter(adapter);
 
         return root;
