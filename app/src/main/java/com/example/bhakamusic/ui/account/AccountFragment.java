@@ -1,12 +1,13 @@
 package com.example.bhakamusic.ui.account;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,32 +15,19 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.bhakamusic.R;
-import com.example.bhakamusic.RoomDatabase.FavouriteDB;
-import com.example.bhakamusic.RoomDatabase.FavouriteData;
-import com.example.bhakamusic.RoomDatabase.RecentlyPlayedDB.RecentlyPlayed;
-import com.example.bhakamusic.RoomDatabase.RecentlyPlayedDB.RecentlyPlayedDB;
-import com.example.bhakamusic.configs.Configs;
+import com.example.bhakamusic.RoomDatabase.UserDB.UserCredentials;
 import com.example.bhakamusic.databinding.FragmentAccountBinding;
+import com.example.bhakamusic.ui.LoginSignup.SignIn;
 import com.example.bhakamusic.ui.Player.Player;
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.MediaItem;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.source.ProgressiveMediaSource;
-import com.google.android.exoplayer2.ui.PlayerControlView;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
-import com.google.android.exoplayer2.upstream.HttpDataSource;
-import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
+import com.example.bhakamusic.ui.Setting;
 
 
 public class AccountFragment extends Fragment{
 
     private FragmentAccountBinding binding;
+    private TextView username;
+    private TextView logout;
+    private TextView setting;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -48,6 +36,32 @@ public class AccountFragment extends Fragment{
 
         binding = FragmentAccountBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
+        logout = view.findViewById(R.id.logout);
+        username = view.findViewById(R.id.username_text);
+        setting = view.findViewById(R.id.setting);
+
+        username.setText(UserCredentials.getUsername());
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences sharedPref = requireActivity().getApplication().getSharedPreferences(String.valueOf(R.string.token_sharedpref), Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString(String.valueOf(R.string.token),"token");
+                editor.apply();
+                Log.d("TAG", "ACCOUNT PAGE: " + sharedPref.getString(String.valueOf(R.string.token),"token"));
+                Player.getExoPlayer(getActivity()).release();
+                startActivity(new Intent(getActivity(), SignIn.class));
+            }
+        });
+
+        setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), Setting.class));
+                Log.d("TAG", "onClick: " + UserCredentials.getToken());
+            }
+        });
         return view;
     }
 }
