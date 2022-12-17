@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -26,6 +29,7 @@ import retrofit2.Response;
 public class Setting extends AppCompatActivity {
     private TextView preference;
     private SwitchCompat switchCompat;
+    public static final String TAG = "SETTING";
     ImageView back;
     @SuppressLint("SetTextI18n")
     @Override
@@ -36,7 +40,9 @@ public class Setting extends AppCompatActivity {
         preference = findViewById(R.id.preference);
         switchCompat = findViewById(R.id.swOnOff);
         back = findViewById(R.id.setting_back);
-        preference.setText(UserCredentials.getPreference());
+        SharedPreferences sref = getApplication().getSharedPreferences(String.valueOf(getString(R.string.id)), Context.MODE_PRIVATE);
+        String id = sref.getString(String.valueOf(R.string.id),UserCredentials.getId());
+        preference.setText(id);
 
         switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -46,12 +52,15 @@ public class Setting extends AppCompatActivity {
                             .getInstance()
                             .getApi()
                             .getPreferenceChange("Bearer " + UserCredentials.getToken());
+                    Log.d("TAG", "onCheckedChanged: " + UserCredentials.getToken());
                     call.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            final String s = Objects.equals(UserCredentials.getPreference(), "flac") ? "opus" : "flac";
-                            UserCredentials.setPreference(s);
-                            preference.setText(UserCredentials.getPreference());
+                            final String s = Objects.equals(id, "flac") ? "opus" : "flac";
+                            SharedPreferences.Editor edit = sref.edit();
+                            edit.putString(String.valueOf(R.string.id),s);
+                            edit.apply();
+                            preference.setText(s);
                         }
 
                         @Override
@@ -59,17 +68,20 @@ public class Setting extends AppCompatActivity {
 
                         }
                     });
-                }else {
+                }else if (!isChecked) {
                     Call<ResponseBody> call = RetrofitClient
                             .getInstance()
                             .getApi()
                             .getPreferenceChange("Bearer " + UserCredentials.getToken());
+                    Log.d(TAG, "onCheckedChanged: " + UserCredentials.getToken());
                     call.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            final String s = Objects.equals(UserCredentials.getPreference(), "flac") ? "opus" : "flac";
-                            UserCredentials.setPreference(s);
-                            preference.setText(UserCredentials.getPreference());
+                            final String s = Objects.equals(id, "flac") ? "opus" : "flac";
+                            SharedPreferences.Editor edit = sref.edit();
+                            edit.putString(String.valueOf(R.string.id),s);
+                            edit.apply();
+                            preference.setText(s);
                         }
 
                         @Override

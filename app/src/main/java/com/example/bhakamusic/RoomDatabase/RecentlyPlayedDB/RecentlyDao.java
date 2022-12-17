@@ -11,7 +11,7 @@ import java.util.List;
 @Dao
 public interface RecentlyDao {
     //Insert to fav
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert()
     void insert(RecentlyPlayed recentlyPlayed);
 
     //Delete query

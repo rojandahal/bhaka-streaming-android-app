@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
             android:fontFamily="@font/roboto_medium"
-            android:text="@string/favourite"
+            android:text="@string/account"
             android:layout_gravity="center"
             android:textColor="@color/text_color_yellow"
             android:textSize="24sp"

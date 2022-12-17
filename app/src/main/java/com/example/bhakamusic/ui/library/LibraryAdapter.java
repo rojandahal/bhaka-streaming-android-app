@@ -1,5 +1,6 @@
 package com.example.bhakamusic.ui.library;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.bhakamusic.R;
 import com.example.bhakamusic.RoomDatabase.FavouriteDB;
 import com.example.bhakamusic.RoomDatabase.FavouriteData;
+import com.example.bhakamusic.RoomDatabase.RecentlyPlayedDB.RecentlyDao;
 import com.example.bhakamusic.RoomDatabase.RecentlyPlayedDB.RecentlyPlayed;
 import com.example.bhakamusic.RoomDatabase.RecentlyPlayedDB.RecentlyPlayedDB;
 import com.example.bhakamusic.configs.Configs;
@@ -44,14 +46,17 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         return new ViewHolder(view);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         //Initialize data
         Log.d(TAG, "onBindViewHolder: " + getItemCount());
-        RecentlyPlayed rp= recentlyPlayedDB.recentlyDao().getAll().get(position);
+        RecentlyDao dao = recentlyPlayedDB.recentlyDao();
+        RecentlyPlayed rp= dao.getAll().get(position);
         holder.recentTitle.setText(rp.getSongTitle());
         holder.recentArtist.setText(rp.getArtistName());
         Picasso.get().load(Configs.BASE_URL + rp.getCoverArt()).into(holder.recentImage);
+        notifyDataSetChanged();
     }
 
     @Override

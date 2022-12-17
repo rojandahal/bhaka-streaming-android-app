@@ -51,7 +51,8 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     protected ImageView backBtn, favBtn;
     List<FavouriteData> favouriteList = new ArrayList<>();
     FavouriteDB favDB;
-    protected RecentlyPlayedDB recentlyPlayedDB;
+    protected RecentlyPlayedDB recentlyPlayedDB = RecentlyPlayedDB.getInstance(getApplication());
+    RecentlyPlayed recentlyPlayed;
     int index;
     List<RecentlyPlayed> recentlyPlayedList;
     ImageView coverPic;
@@ -75,8 +76,8 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         favDB = FavouriteDB.getInstance(this);
         //Get data list
         favouriteList = favDB.favDao().getAll();
-        recentlyPlayedDB = RecentlyPlayedDB.getInstance(this);
-        recentlyPlayedList = recentlyPlayedDB.recentlyDao().getAll();
+
+        recentlyPlayed = new RecentlyPlayed();
 
         if((!Objects.equals(getIntent().getExtras().getString("calling-activity"), getString(R.string.favourite_activity)))){
             getIntentData();
@@ -87,7 +88,6 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             setPlayerView();
             favouritePlaying();
         }
-
         backBtn.setOnClickListener(this);
         favBtn.setOnClickListener(this);
 
@@ -168,6 +168,12 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        recentlyPlayed.setSongTitle(title);
+        recentlyPlayed.setCoverArt(cover);
+        recentlyPlayed.setSongId(id);
+        recentlyPlayed.setArtistName(artist);
+        recentlyPlayedDB.recentlyDao().insert(recentlyPlayed);
+
         Bundle bundle = new Bundle();
         bundle.putString("id", id);
         bundle.putString("title", title);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -75,31 +76,42 @@ public class MainActivity2 extends AppCompatActivity {
         //Shared preference to store token and username and userID
         SharedPreferences sharedPref = getApplication().getSharedPreferences(String.valueOf(R.string.token_sharedpref), Context.MODE_PRIVATE);
         String token = sharedPref.getString(getString(R.string.token),"token");
-        Log.d(TAG, "onCreate: " + token);
         UserCredentials.setToken(token);
 
-        Call<UserResponse> call = RetrofitClient
-                .getInstance()
-                .getApi()
-                .getUserDetails("Bearer " + sharedPref.getString(getString(R.string.token),token));
-        call.enqueue(new Callback<UserResponse>() {
-            @Override
-            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
-                if(response.isSuccessful()){
-                    UserResponse userResponse = response.body();
-                    UserCredentials.setId(userResponse.getId());
-                    UserCredentials.setUsername(userResponse.getUsername());
-                    UserCredentials.setEmail(userResponse.getEmail());
-                    UserCredentials.setPreference(userResponse.getPreference());
-                    UserCredentials.setToken(token);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Call<UserResponse> call = RetrofitClient
+                            .getInstance()
+                            .getApi()
+                            .getUserDetails("Bearer " + token);
+                    call.enqueue(new Callback<UserResponse>() {
+                        @Override
+                        public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                            if(response.isSuccessful()){
+                                assert response.body() != null;
+                                UserResponse userResponse = response.body();
+                                UserCredentials.setId(userResponse.getId());
+                                UserCredentials.setUsername(userResponse.getUsername());
+                                UserCredentials.setEmail(userResponse.getEmail());
+                                UserCredentials.setPreference(userResponse.getPreference());
+                                UserCredentials.setPlaylist(userResponse.getCreatedPlaylists());
+                                UserCredentials.setToken(token);
+                                SharedPreferences sref = getApplication().getSharedPreferences(String.valueOf(getString(R.string.id)),Context.MODE_PRIVATE);
+                                SharedPreferences.Editor edit = sref.edit();
+                                edit.putString(String.valueOf(R.string.id),userResponse.getId());
+                                edit.apply();
+                                Log.d(TAG, "onCreate: " + UserCredentials.getPlaylist());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<UserResponse> call, Throwable t) {
+
+                        }
+                    });
                 }
-            }
-
-            @Override
-            public void onFailure(Call<UserResponse> call, Throwable t) {
-
-            }
-        });
+            },2000);
 
         try {
             if (getIntent() != null) {

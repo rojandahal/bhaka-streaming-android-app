@@ -92,7 +92,7 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
                                     Log.d(TAG, "onResponse: ERROR" + "EMPTY");
                                 }else {
                                     for (SearchResponse rs : response.body()) {
-                                        Log.d(TAG, "onResponse: SONG" + rs.getTitle());
+//                                        Log.d(TAG, "onResponse: SONG" + rs.getTitle());
                                         songList.add(rs);
                                     }
                                 }
@@ -126,7 +126,6 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
         Bundle bundle = new Bundle();
         bundle.putString("calling-activity","HOME_FRAGMENT");
         bundle.putString("id",response.getId());
-        bundle.putString("user", "4d516d8b-864c-47e8-99cb-934433925298");
         bundle.putString("title", response.getTitle());
         bundle.putString("cover",response.getCoverArt());
         bundle.putString("artist",response.getArtist());

@@ -1,11 +1,33 @@
 package com.example.bhakamusic.RoomDatabase.UserDB;
 
+import java.util.ArrayList;
+
 public abstract class UserCredentials {
     public static String token = "token";
     public static String username;
     public static String id;
     public static String email;
     public static String preference;
+    public static ArrayList<String> playlist = new ArrayList<>();
+    public static ArrayList<String> names = new ArrayList<>();
+    public static void resetArrayList() {
+        names = new ArrayList<>();
+    }
+    public static void setToList(String s){
+        names.add(s);
+    }
+
+    public static ArrayList<String> getNames() {
+        return names;
+    }
+
+    public static ArrayList<String> getPlaylist() {
+        return playlist;
+    }
+
+    public static void setPlaylist(ArrayList<String> playlist) {
+        UserCredentials.playlist = playlist;
+    }
 
     public static void setToken(String token) {
         UserCredentials.token = token;

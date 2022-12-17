@@ -37,4 +37,10 @@
     <string name="logout">Logout</string>
     <string name="settings">Settings</string>
     <string name="opus">opus</string>
+    <string name="no_songs_found">No songs found in playlist!</string>
+    <string name="description">Description</string>
+    <string name="name">Name</string>
+    <string name="enter_name_and_description_of_playlist">Enter name and description of playlist</string>
+    <string name="account">Account</string>
+    <string name="id">id</string>
 </resources>

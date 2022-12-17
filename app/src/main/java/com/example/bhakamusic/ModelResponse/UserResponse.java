@@ -1,5 +1,7 @@
 package com.example.bhakamusic.ModelResponse;
 
+import java.util.ArrayList;
+
 public class UserResponse {
     String id;
     String username;
@@ -7,7 +9,7 @@ public class UserResponse {
     String password;
     String profilePicture;
     String[] liked;
-    String[] createdPlaylists;
+    ArrayList<String> createdPlaylists = new ArrayList<String>();
     String[] followedPlaylists;
     String preference;
     String createdAt;
@@ -61,11 +63,11 @@ public class UserResponse {
         this.liked = liked;
     }
 
-    public String[] getCreatedPlaylists() {
+    public ArrayList getCreatedPlaylists() {
         return createdPlaylists;
     }
 
-    public void setCreatedPlaylists(String[] createdPlaylists) {
+    public void setCreatedPlaylists(ArrayList createdPlaylists) {
         this.createdPlaylists = createdPlaylists;
     }
 

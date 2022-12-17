@@ -70,7 +70,7 @@
                 app:layout_constraintVertical_bias="1.0" />
 
             <ImageView
-                android:id="@+id/imageView5"
+                android:id="@+id/playlist_click"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginStart="2dp"

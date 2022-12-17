@@ -1,6 +1,8 @@
 package com.example.bhakamusic.Apis;
 
 import com.example.bhakamusic.ModelResponse.LoginRequest;
+import com.example.bhakamusic.ModelResponse.PlaylistRequest;
+import com.example.bhakamusic.ModelResponse.PlaylistResponse;
 import com.example.bhakamusic.ModelResponse.RegisterRequest;
 import com.example.bhakamusic.ModelResponse.RegisterResponse;
 import com.example.bhakamusic.ModelResponse.SearchRequest;
@@ -17,6 +19,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface Api {
 
@@ -38,4 +41,9 @@ public interface Api {
     @PATCH("api/users/change-preference")
     Call<ResponseBody> getPreferenceChange(@Header("Authorization") String authToken);
 
+    @GET("api/playlists/{id}")
+    Call<PlaylistResponse> getPlaylistName(@Path("id") String s);
+
+    @POST("api/playlists/create")
+    Call<PlaylistResponse> setPlayList(@Body PlaylistRequest pl);
 }
